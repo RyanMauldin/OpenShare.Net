@@ -27,10 +27,10 @@ namespace OpenShare.Net.Library.Services
             get { return ConfigurationHelper.GetSecureStringFromAppSettings("ExchangeServiceUsername"); }
         }
 
-        private static SecureString Email
-        {
-            get { return ConfigurationHelper.GetSecureStringFromAppSettings("ExchangeServiceEmail"); }
-        }
+        //private static SecureString Email
+        //{
+        //    get { return ConfigurationHelper.GetSecureStringFromAppSettings("ExchangeServiceEmail"); }
+        //}
 
         private static SecureString Password
         {
@@ -53,7 +53,10 @@ namespace OpenShare.Net.Library.Services
             bool isBodyHtml,
             bool sendAndSaveCopy = false)
         {
-            Send(to, new Dictionary<string, string>(), new Dictionary<string, string>(), subject, body, isBodyHtml);
+            if (to == null)
+                throw new ArgumentNullException("to");
+
+            Send(to, new Dictionary<string, string>(), new Dictionary<string, string>(), subject, body, isBodyHtml, sendAndSaveCopy);
         }
 
         public void Send(
@@ -65,6 +68,14 @@ namespace OpenShare.Net.Library.Services
             bool isBodyHtml,
             bool sendAndSaveCopy = false)
         {
+            if (to == null)
+                throw new ArgumentNullException("to");
+            if (cc == null)
+                throw new ArgumentNullException("cc");
+            if (bcc == null)
+                throw new ArgumentNullException("bcc");
+
+
             var exchangeService = new ExchangeService(ExchangeVersion.Exchange2010_SP2)
             {
                 Credentials = new WebCredentials(Username.ToUnsecureString(), Password.ToUnsecureString(), Domain.ToUnsecureString()),
