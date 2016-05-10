@@ -31,5 +31,15 @@ namespace OpenShare.Net.UnitTest.UnitTests
             //Assert.IsNotNull(resultLookup);
             //Assert.IsTrue(resultLookup.Count > 0);
         }
+
+        [TestMethod]
+        public void LogService_Tests()
+        {
+            var configurationFactory = new ConfigurationFactory();
+            var configurationService = new ConfigurationService(configurationFactory);
+            var mailService = new MailService();
+            var logService = new LogService(configurationService, mailService);
+            logService.EmailMessage("This\nemail\nhas\nspaces");
+        }
     }
 }

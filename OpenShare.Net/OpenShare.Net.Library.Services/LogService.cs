@@ -150,7 +150,7 @@ namespace OpenShare.Net.Library.Services
                 var builder = new StringBuilder(dateString.Length + value.Length + 63);
 
                 builder.AppendFormat("<p>{0}</p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(dateString)));
-                builder.AppendFormat("<p>Message: {0}<p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(message)));
+                builder.AppendFormat("<p>Message: {0}<p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(message)).Replace("\n", "<br/>"));
 
                 return builder.ToString();
             }
@@ -220,7 +220,7 @@ namespace OpenShare.Net.Library.Services
                     },
                     GetErrorMessageSubject(),
                     GetWebFriendlyErrorMessage(exception, date),
-                    false);
+                    true);
             }
             catch (Exception)
             {
@@ -239,7 +239,7 @@ namespace OpenShare.Net.Library.Services
                     },
                     GetErrorMessageSubject(),
                     GetWebFriendlyMessage(message, date),
-                    false);
+                    true);
             }
             catch (Exception)
             {

@@ -293,13 +293,5 @@ namespace OpenShare.Net.UnitTest.UnitTests
             var endOfDay = dateTime.EndOfDay();
             Assert.AreEqual(startOfDay.AddDays(1).AddMilliseconds(-3), endOfDay);
         }
-
-        [TestMethod]
-        public void RandomTest()
-        {
-            var data = "MOYCRF/Mgkk6RYPtyoUH/15C2oF/mLLzbx7cs2cTojkKJVz7SP2QpfZLdtJusBezwZpj9pPxLl8SUDVLy5VL4MvraIdIBPGXtPoO5rKp46JnFq0tRz9/BpaqgIavWG47DxtX5W+WOCTzhj6Ay9fXkrAI6bp1OsMMwDeOSueKw2BF5T9yanfOWQr037YSe00HKGyxwfAFcVLLe+ThKXZnuGTZ1xOrG85FVWwd0z83CDRS0KMMZS4HPIbE8PWc6S8R";
-            var un = data.ToAesDecryptedString(AesPassword, AesSalt, AesPasswordIterations, AesInitialVector, AesKeySize);
-            Assert.IsTrue(un.Length > 0);
-        }
     }
 }
