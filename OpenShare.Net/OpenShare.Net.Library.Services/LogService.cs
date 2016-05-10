@@ -153,7 +153,7 @@ namespace OpenShare.Net.Library.Services
                     },
                     GetErrorMessageSubject(),
                     GetWebFriendlyErrorMessage(exception, date),
-                    true);
+                    false);
             }
             catch (Exception)
             {
