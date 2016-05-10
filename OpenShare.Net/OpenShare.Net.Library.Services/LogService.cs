@@ -66,6 +66,32 @@ namespace OpenShare.Net.Library.Services
             }
         }
 
+        private static string GetMessage(string message, DateTime date)
+        {
+            var dateString = date.ToString("MM-dd-yyyy HH:mm:ss");
+            try
+            {
+                var value = string.IsNullOrEmpty(message)
+                    ? string.Empty
+                    : message;
+                if (value.Length == 0)
+                    throw new Exception("Message is a null or empty string.");
+
+                var builder = new StringBuilder(dateString.Length + value.Length + 63);
+
+                builder.AppendFormat("{0} - Message: {1}\n", dateString, value);
+
+                return builder.ToString();
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = string.IsNullOrEmpty(ex.Message)
+                   ? "Unknown Error"
+                   : ex.Message;
+                return string.Format("<p>{0} - Log Exception: {1}</p>", dateString, exceptionMessage);
+            }
+        }
+
         private static string GetWebFriendlyErrorMessage(Exception exception, DateTime date)
         {
             var dateString = date.ToString("MM-dd-yyyy HH:mm:ss");
@@ -96,6 +122,35 @@ namespace OpenShare.Net.Library.Services
                     builder.AppendFormat("<p>Inner Exception: {0}<p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(innerExceptionMessage)));
                 if (!string.IsNullOrEmpty(stackTrace))
                     builder.AppendFormat("<p>Stack Trace: {0}<p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(stackTrace)));
+
+                return builder.ToString();
+            }
+            catch (Exception ex)
+            {
+                var exceptionMessage = string.IsNullOrEmpty(ex.Message)
+                   ? "Unknown Error"
+                   : ex.Message;
+                return string.Format("<p>{0} - Log Exception: {1}</p>",
+                    HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(dateString)),
+                    HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(exceptionMessage)));
+            }
+        }
+
+        private static string GetWebFriendlyMessage(string message, DateTime date)
+        {
+            var dateString = date.ToString("MM-dd-yyyy HH:mm:ss");
+            try
+            {
+                var value = string.IsNullOrEmpty(message)
+                    ? string.Empty
+                    : message;
+                if (value.Length == 0)
+                    throw new Exception("Message is a null or empty string.");
+
+                var builder = new StringBuilder(dateString.Length + value.Length + 63);
+
+                builder.AppendFormat("<p>{0}</p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(dateString)));
+                builder.AppendFormat("<p>Message: {0}<p>", HttpUtility.HtmlEncode(HttpUtility.HtmlDecode(message)));
 
                 return builder.ToString();
             }
@@ -142,6 +197,18 @@ namespace OpenShare.Net.Library.Services
             }
         }
 
+        private static void LogMessageInternal(string message, DateTime date)
+        {
+            try
+            {
+                Trace.Write(GetMessage(message, date));
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
         private void EmailErrorInternal(Exception exception, DateTime date)
         {
             try
@@ -153,6 +220,25 @@ namespace OpenShare.Net.Library.Services
                     },
                     GetErrorMessageSubject(),
                     GetWebFriendlyErrorMessage(exception, date),
+                    false);
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+        }
+
+        private void EmailMessageInternal(string message, DateTime date)
+        {
+            try
+            {
+                _mailService.Send(
+                    new Dictionary<string, string>
+                    {
+                        { _errorEmailGroup, null }
+                    },
+                    GetErrorMessageSubject(),
+                    GetWebFriendlyMessage(message, date),
                     false);
             }
             catch (Exception)
@@ -176,6 +262,23 @@ namespace OpenShare.Net.Library.Services
             var date = DateTime.Now;
             LogErrorInternal(exception, date);
             EmailErrorInternal(exception, date);
+        }
+
+        public void LogMessage(string message)
+        {
+            LogMessageInternal(message, DateTime.Now);
+        }
+
+        public void EmailMessage(string message)
+        {
+            EmailMessageInternal(message, DateTime.Now);
+        }
+
+        public void LogAndEmailMessage(string message)
+        {
+            var date = DateTime.Now;
+            LogMessageInternal(message, date);
+            EmailMessageInternal(message, date);
         }
     }
 }

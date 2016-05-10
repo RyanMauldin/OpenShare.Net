@@ -75,7 +75,6 @@ namespace OpenShare.Net.Library.Services
             if (bcc == null)
                 throw new ArgumentNullException("bcc");
 
-
             var exchangeService = new ExchangeService(ExchangeVersion.Exchange2010_SP2)
             {
                 Credentials = new WebCredentials(Username.ToUnsecureString(), Password.ToUnsecureString(), Domain.ToUnsecureString()),
