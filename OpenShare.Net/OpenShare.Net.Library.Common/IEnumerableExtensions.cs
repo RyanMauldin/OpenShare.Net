@@ -52,12 +52,12 @@ namespace OpenShare.Net.Library.Common
             return new HashSet<T>(array, comparer);
         }
 
-        public static HashSet<TOut> TohashSet<TIn, TOut>(this IEnumerable<TIn> array, Func<TIn, TOut> predicate)
+        public static HashSet<TOut> ToHashSet<TIn, TOut>(this IEnumerable<TIn> array, Func<TIn, TOut> predicate)
         {
             return new HashSet<TOut>(array.Select(predicate));
         }
 
-        public static HashSet<TOut> TohashSet<TIn, TOut>(this IEnumerable<TIn> array, Func<TIn, TOut> predicate, IEqualityComparer<TOut> comparer)
+        public static HashSet<TOut> ToHashSet<TIn, TOut>(this IEnumerable<TIn> array, Func<TIn, TOut> predicate, IEqualityComparer<TOut> comparer)
         {
             return new HashSet<TOut>(array.Select(predicate), comparer);
         }
