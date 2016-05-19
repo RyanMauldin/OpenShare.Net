@@ -16,8 +16,8 @@ namespace OpenShare.Net.Library.Common
 
             return new DateTime(
                 Convert.ToInt32(dateMatch.Groups[3].Value),
-                Convert.ToInt32(dateMatch.Groups[2].Value),
-                Convert.ToInt32(dateMatch.Groups[1].Value));
+                Convert.ToInt32(dateMatch.Groups[1].Value),
+                Convert.ToInt32(dateMatch.Groups[2].Value));
         }
     }
 }

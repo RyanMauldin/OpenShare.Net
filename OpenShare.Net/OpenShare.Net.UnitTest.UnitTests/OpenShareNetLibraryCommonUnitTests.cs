@@ -292,6 +292,10 @@ namespace OpenShare.Net.UnitTest.UnitTests
             Assert.AreEqual(dateTime.Date, startOfDay);
             var endOfDay = dateTime.EndOfDay();
             Assert.AreEqual(startOfDay.AddDays(1).AddMilliseconds(-3), endOfDay);
+            var dateTest1 = ConfigurationHelper.GetDateFromAppSettings("DateTest1");
+            var dateTest2 = ConfigurationHelper.GetDateFromAppSettings("DateTest2");
+            Assert.AreEqual(dateTest1, new DateTime(2014, 12, 31));
+            Assert.AreEqual(dateTest2, new DateTime(1, 1, 1));
         }
     }
 }
