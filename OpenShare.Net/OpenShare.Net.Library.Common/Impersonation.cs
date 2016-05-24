@@ -5,20 +5,20 @@ using System.Security;
 using System.Security.Permissions;
 using System.Security.Principal;
 using Microsoft.Win32.SafeHandles;
+using OpenShare.Net.Library.Common.Types;
 
 namespace OpenShare.Net.Library.Common
 {
     [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
     public class Impersonation : IDisposable
     {
-        private const int Logon32LogonNewCredentials = 2; // Was 9?
         private readonly SafeTokenHandle _handle;
         private readonly WindowsImpersonationContext _context;
 
-        public Impersonation(SecureString domain, SecureString username, SecureString password)
+        public Impersonation(SecureString domain, SecureString username, SecureString password, LogonType logonType = LogonType.LogonInteractive, LogonProviderType logonProviderType = LogonProviderType.Default)
         {
             //#if DEBUG
-            if (!LogonUser(username.ToUnsecureString(), domain.ToUnsecureString(), password.ToUnsecureString(), Logon32LogonNewCredentials, 0, out _handle))
+            if (!LogonUser(username.ToUnsecureString(), domain.ToUnsecureString(), password.ToUnsecureString(), (int)logonType, (int)logonProviderType, out _handle))
                 throw new ApplicationException(
                     string.Format(
                     "Could not impersonate the elevated user. LogonUser returned error code {0}.",
