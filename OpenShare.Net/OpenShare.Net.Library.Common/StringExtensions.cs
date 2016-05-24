@@ -24,5 +24,11 @@ namespace OpenShare.Net.Library.Common
         {
             return encoding.GetString(Convert.FromBase64String(value));
         }
+
+        public static bool IsValidDate(this string value)
+        {
+            DateTime dateTime;
+            return DateTime.TryParse(value, out dateTime);
+        }
     }
 }

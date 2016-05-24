@@ -83,6 +83,7 @@
     <Compile Include="DateTimeHelper.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="IListExtensions.cs" />
     <Compile Include="Impersonation.cs" />
     <Compile Include="Sha1Encryption.cs" />
     <Compile Include="StreamExtensions.cs" />
