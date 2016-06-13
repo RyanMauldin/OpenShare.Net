@@ -13,8 +13,6 @@
     <tags>$id$</tags>
     <dependencies>
       <dependency id="OpenShare.Net.Library.Common" version="1.0.0.0" />
-      <dependency id="Microsoft.Exchange.WebServices" version="2.2" />
-      <dependency id="SlowCheetah" version="2.5.15" />
     </dependencies>
   </metadata>
   <files>
