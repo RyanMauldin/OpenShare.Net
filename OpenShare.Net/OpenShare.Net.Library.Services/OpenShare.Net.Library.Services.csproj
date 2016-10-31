@@ -65,13 +65,11 @@
     <SlowCheetahTargets Condition=" '$(SlowCheetah_EnableImportFromNuGet)'=='true' and Exists('$(SlowCheetah_NuGetImportPath)') ">$(SlowCheetah_NuGetImportPath)</SlowCheetahTargets>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OpenShareNetKey.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OpenShareNetAssemblies>bin\$(Configuration)\OpenShare.Net.Library.Services.dll</OpenShareNetAssemblies>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -115,7 +113,6 @@
     <None Include="OpenShare.Net.Library.Services.nuspec">
       <SubType>Designer</SubType>
     </None>
-    <None Include="OpenShareNetKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\SlowCheetah\SlowCheetah.Transforms.targets" />
   </ItemGroup>
@@ -141,12 +138,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
-    <GetAssemblyIdentity AssemblyFiles="$(OpenShareNetAssemblies)">
-      <Output TaskParameter="Assemblies" ItemName="OpenShareNetAssemblyIdentities" />
-    </GetAssemblyIdentity>
-    <Delete Files="OpenShare.Net.Library.Services.%(OpenShareNetAssemblyIdentities.Version).nupkg" />
-    <Exec Command="nuget pack OpenShare.Net.Library.Services.csproj -Version %(OpenShareNetAssemblyIdentities.Version) -Prop Configuration=Release">
-    </Exec>
-  </Target>
 </Project>

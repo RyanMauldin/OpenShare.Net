@@ -57,13 +57,11 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>OpenShareNetKey.pfx</AssemblyOriginatorKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OpenShareNetAssemblies>bin\$(Configuration)\OpenShare.Net.Library.Common.dll</OpenShareNetAssemblies>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -100,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenShare.Net.Library.Common.nuspec" />
-    <None Include="OpenShareNetKey.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -110,12 +107,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
-    <GetAssemblyIdentity AssemblyFiles="$(OpenShareNetAssemblies)">
-      <Output TaskParameter="Assemblies" ItemName="OpenShareNetAssemblyIdentities" />
-    </GetAssemblyIdentity>
-    <Delete Files="OpenShare.Net.Library.Common.%(OpenShareNetAssemblyIdentities.Version).nupkg" />
-    <Exec Command="nuget pack OpenShare.Net.Library.Common.csproj -Version %(OpenShareNetAssemblyIdentities.Version) -Prop Configuration=Release">
-    </Exec>
-  </Target>
 </Project>
