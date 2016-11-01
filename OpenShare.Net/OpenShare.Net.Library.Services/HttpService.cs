@@ -20,32 +20,29 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task<HttpResponseMessage> LoginAsync(
-            string url, Dictionary<string, string> content,
+            string url, Dictionary<string, string> content = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, url)
-                {
-                    Content = new FormUrlEncodedContent(content)
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+                if (content != null)
+                    httpRequestMessage.Content = new FormUrlEncodedContent(content);
                     //Content = new FormUrlEncodedContent(
                     //    new Dictionary<string, string>
                     //    {
                     //        {"Username", Username},
                     //        {"Password", Password}
                     //    })
-                };
-
+                
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
@@ -55,28 +52,25 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task<HttpResponseMessage> LoginJsonAsync(
-            string url, Dictionary<string, string> content,
+            string url, Dictionary<string, string> content = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, url)
-                {
-                    Content = new StringContent(
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+                if (content != null)
+                    httpRequestMessage.Content = new StringContent(
                         new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 }.Serialize(content),
                         Encoding.UTF8,
-                        "application/json")
-                };
+                        "application/json");
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -87,27 +81,24 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task<string> RequestAsync(
-            HttpMethod httpMethod, string url, Dictionary<string, string> content, bool skipStatusCheck = false,
+            HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (httpMethod == null)
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(httpMethod, url)
-                {
-                    Content = new FormUrlEncodedContent(content)
-                };
+                var httpRequestMessage = new HttpRequestMessage(httpMethod, url);
+                if (httpMethod != HttpMethod.Get && content != null)
+                    httpRequestMessage.Content = new FormUrlEncodedContent(content);
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -117,7 +108,7 @@ namespace OpenShare.Net.Library.Services
 
                     response.EnsureSuccessStatusCode();
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception(string.Format("Error fetching data from Url: {0}", url));
+                        throw new Exception($"Error fetching data from Url: {url}");
 
                     return await response.Content.ReadAsStringAsync();
                 }
@@ -125,30 +116,27 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task<string> RequestJsonAsync(
-            HttpMethod httpMethod, string url, Dictionary<string, string> content, bool skipStatusCheck = false,
+            HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (httpMethod == null)
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(httpMethod, url)
-                {
-                    Content = new StringContent(
+                var httpRequestMessage = new HttpRequestMessage(httpMethod, url);
+                if (httpMethod != HttpMethod.Get && content != null)
+                    httpRequestMessage.Content = new StringContent(
                         new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 }.Serialize(content),
                         Encoding.UTF8,
-                        "application/json")
-                };
+                        "application/json");
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -158,7 +146,7 @@ namespace OpenShare.Net.Library.Services
 
                     response.EnsureSuccessStatusCode();
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception(string.Format("Error fetching data from Url: {0}", url));
+                        throw new Exception($"Error fetching data from Url: {url}");
 
                     return await response.Content.ReadAsStringAsync();
                 }
@@ -166,27 +154,24 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task<byte[]> RequestBytesAsync(
-            HttpMethod httpMethod, string url, Dictionary<string, string> content, bool skipStatusCheck = false,
+            HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (httpMethod == null)
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(httpMethod, url)
-                {
-                    Content = new FormUrlEncodedContent(content)
-                };
+                var httpRequestMessage = new HttpRequestMessage(httpMethod, url);
+                if (httpMethod != HttpMethod.Get && content != null)
+                    httpRequestMessage.Content = new FormUrlEncodedContent(content);
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -196,7 +181,7 @@ namespace OpenShare.Net.Library.Services
 
                     response.EnsureSuccessStatusCode();
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception(string.Format("Error fetching data from Url: {0}", url));
+                        throw new Exception($"Error fetching data from Url: {url}");
 
                     return await response.Content.ReadAsByteArrayAsync();
                 }
@@ -204,30 +189,27 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task<byte[]> RequestBytesJsonAsync(
-            HttpMethod httpMethod, string url, Dictionary<string, string> content, bool skipStatusCheck = false,
+            HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (httpMethod == null)
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(httpMethod, url)
-                {
-                    Content = new StringContent(
+                var httpRequestMessage = new HttpRequestMessage(httpMethod, url);
+                if (httpMethod != HttpMethod.Get && content != null)
+                    httpRequestMessage.Content = new StringContent(
                         new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 }.Serialize(content),
                         Encoding.UTF8,
-                        "application/json")
-                };
+                        "application/json");
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -237,7 +219,7 @@ namespace OpenShare.Net.Library.Services
 
                     response.EnsureSuccessStatusCode();
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception(string.Format("Error fetching data from Url: {0}", url));
+                        throw new Exception($"Error fetching data from Url: {url}");
 
                     return await response.Content.ReadAsByteArrayAsync();
                 }
@@ -245,29 +227,26 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task RequestStreamAsync(
-            HttpMethod httpMethod, string url, Dictionary<string, string> content, Stream stream, bool skipStatusCheck = false,
+            HttpMethod httpMethod, string url, Stream stream, Dictionary<string, string> content = null, bool skipStatusCheck = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (httpMethod == null)
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(httpMethod, url)
-                {
-                    Content = new FormUrlEncodedContent(content)
-                };
+                var httpRequestMessage = new HttpRequestMessage(httpMethod, url);
+                if (httpMethod != HttpMethod.Get && content != null)
+                    httpRequestMessage.Content = new FormUrlEncodedContent(content);
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -280,7 +259,7 @@ namespace OpenShare.Net.Library.Services
 
                     response.EnsureSuccessStatusCode();
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception(string.Format("Error fetching data from Url: {0}", url));
+                        throw new Exception($"Error fetching data from Url: {url}");
 
                     await response.Content.CopyToAsync(stream);
                 }
@@ -288,32 +267,29 @@ namespace OpenShare.Net.Library.Services
         }
 
         public virtual async Task RequestStreamJsonAsync(
-            HttpMethod httpMethod, string url, Dictionary<string, string> content, Stream stream, bool skipStatusCheck = false,
+            HttpMethod httpMethod, string url, Stream stream, Dictionary<string, string> content = null, bool skipStatusCheck = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             if (httpMethod == null)
-                throw new ArgumentNullException("httpMethod");
+                throw new ArgumentNullException(nameof(httpMethod));
             if (url == null)
-                throw new ArgumentNullException("url");
-            if (content == null)
-                throw new ArgumentNullException("content");
+                throw new ArgumentNullException(nameof(url));
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
 
             if (string.IsNullOrWhiteSpace(url))
-                throw new Exception(string.Format("Invalid url value: {0}", url));
+                throw new Exception($"Invalid url value: {url}");
 
             using (var httpClientHandler = new HttpClientHandler { UseProxy = false, CookieContainer = Container })
             {
-                var httpRequestMessage = new HttpRequestMessage(httpMethod, url)
-                {
-                    Content = new StringContent(
+                var httpRequestMessage = new HttpRequestMessage(httpMethod, url);
+                if (httpMethod != HttpMethod.Get && content != null)
+                    httpRequestMessage.Content = new StringContent(
                         new JavaScriptSerializer { MaxJsonLength = int.MaxValue, RecursionLimit = 100 }.Serialize(content),
                         Encoding.UTF8,
-                        "application/json")
-                };
+                        "application/json");
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
@@ -326,7 +302,7 @@ namespace OpenShare.Net.Library.Services
 
                     response.EnsureSuccessStatusCode();
                     if (!response.IsSuccessStatusCode)
-                        throw new Exception(string.Format("Error fetching data from Url: {0}", url));
+                        throw new Exception($"Error fetching data from Url: {url}");
 
                     await response.Content.CopyToAsync(stream);
                 }
