@@ -11,6 +11,10 @@ The following **NuGet** libraries are available:
 * <https://www.nuget.org/packages/OpenShare.Net.Library.Services/>
 * <https://www.nuget.org/packages/OpenShare.Net.Library.Threading/>
 
+**TFS Build Badge for Visual Studio Online**
+
+https://ryanmauldin.visualstudio.com/_apis/public/build/definitions/1b6b2d4e-b829-47fc-92ef-e2e179a7005b/1/badge
+
 **Code Samples:**
 
 *Library.Services.HttpService ...*
