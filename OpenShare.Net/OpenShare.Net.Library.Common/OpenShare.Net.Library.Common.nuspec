@@ -6,11 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
+    <projectUrl>https://github.com/OhRyanOh/OpenShare.Net</projectUrl>
+    <licenseUrl>https://github.com/OhRyanOh/OpenShare.Net/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>OpenShare.Net Common Library</description>
+    <description>OpenShare.Net Common Library. Many common extension methods for making life simple from IEnumerable, Impersonation, String, WCF Services to Encryption. See source code on Github by using the project url.</description>
     <releaseNotes>None to be spoken.</releaseNotes>
     <copyright>© 2016 Ryan Mauldin</copyright>
-    <tags>$id$</tags>
+    <tags>$id$, openshare, openshare.net, openshare.net.library, open share, share, common, framework, common framework, repository, repositories, service, services, thread, threading, client pool, pool</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\$id$.pdb" target="lib\net45\" />

@@ -6,11 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
+    <projectUrl>https://github.com/OhRyanOh/OpenShare.Net</projectUrl>
+    <licenseUrl>https://github.com/OhRyanOh/OpenShare.Net/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>OpenShare.Net Repository Library</description>
+    <description>OpenShare.Net Repository Library. All repositories are tightly coupled to Entity Framework. Primary Keys have their own generic types to make creating new repositories easy, and for allowance of composite keys. Many basic Id based repositories for different types already exist and can be used as examples. See source code on Github by using the project url.</description>
     <releaseNotes>None to be spoken.</releaseNotes>
     <copyright>© 2016 Ryan Mauldin</copyright>
-    <tags>$id$</tags>
+    <tags>$id$, openshare, openshare.net, openshare.net.library, open share, share, common, repository, repositories, framework, common framework</tags>
     <dependencies>
       <dependency id="OpenShare.Net.Library.Common" version="1.0.0.0" />
     </dependencies>

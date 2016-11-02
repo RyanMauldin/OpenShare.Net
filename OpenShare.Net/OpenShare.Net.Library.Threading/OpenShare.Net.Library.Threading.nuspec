@@ -6,11 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
+    <projectUrl>https://github.com/OhRyanOh/OpenShare.Net</projectUrl>
+    <licenseUrl>https://github.com/OhRyanOh/OpenShare.Net/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>OpenShare.Net Threading Library</description>
+    <description>OpenShare.Net Threading Library. Client Pool is generically typed and plays well with TPL (Task Parallel Library) for any disposable clients. See source code on Github by using the project url.</description>
     <releaseNotes>None to be spoken.</releaseNotes>
     <copyright>© 2016 Ryan Mauldin</copyright>
-    <tags>$id$</tags>
+    <tags>$id$, openshare, openshare.net, openshare.net.library, open share, share, common, framework, common framework, repository, repositories, service, services, thread, threading, client pool, pool</tags>
   </metadata>
   <files>
     <file src="bin\$configuration$\$id$.pdb" target="lib\net45\" />
