@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/OhRyanOh/OpenShare.Net</projectUrl>
     <licenseUrl>https://github.com/OhRyanOh/OpenShare.Net/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>OpenShare.Net Threading Library. Client Pool is generically typed and plays well with TPL (Task Parallel Library) for any disposable clients. See source code on Github by using the project url.</description>
+    <description>OpenShare.Net Threading Library. ConcurrentCache is a new in-memory cache system that is generically typed to IDictionary and is thread safe. Client Pool is generically typed and plays well with TPL (Task Parallel Library) for any disposable clients. See source code on Github by using the project url.</description>
     <releaseNotes>None to be spoken.</releaseNotes>
     <copyright>© 2016 Ryan Mauldin</copyright>
     <tags>$id$, openshare, openshare.net, openshare.net.library, open share, share, common, framework, common framework, repository, repositories, service, services, thread, threading, client pool, pool</tags>

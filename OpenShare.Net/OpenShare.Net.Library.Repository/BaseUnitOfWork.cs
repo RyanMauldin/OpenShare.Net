@@ -91,8 +91,13 @@ namespace OpenShare.Net.Library.Repository
 
         /// <summary>
         /// Implements Dispose from IDisposable interface.
+        /// <remarks>
+        /// Based on the Dispose Pattern described on MSDN, found at the following link:
+        /// https://msdn.microsoft.com/en-us/library/b1yfkh5e(v=vs.110).aspx
+        /// the article suggests to not make the parameterless Displose method virtual.
+        /// </remarks>
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);

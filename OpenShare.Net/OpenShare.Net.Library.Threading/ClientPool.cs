@@ -8,9 +8,15 @@ namespace OpenShare.Net.Library.Threading
     public class ClientPool<T> : IDisposable
         where T : class, IDisposable, new()
     {
+        /// <summary>
+        /// Field to determine if this class has already been disposed.
+        /// </summary>
         private bool _disposed;
 
-        public object LockObject = new object();
+        /// <summary>
+        /// The lock object for thread safety.
+        /// </summary>
+        public readonly object LockObject = new object();
 
         private const int TwentyMinutesInMilliseconds = 20 * 60 * 1000; // 20 minutes = 1,200,000 milliseconds
         private const int OneDayInMilliseconds = 24 * 60 * 60 * 1000; // 24 hours = 86,400,000 milliseconds
@@ -223,19 +229,18 @@ namespace OpenShare.Net.Library.Threading
 
             lock (LockObject)
             {
-                if (Clients.Any(p => p == client))
-                {
-                    var clients = new ConcurrentQueue<T>();
-                    T existingClient;
-                    while (Clients.TryDequeue(out existingClient))
-                        if (client != existingClient)
-                            clients.Enqueue(existingClient);
-                    Clients = clients;
-                    return true;
-                }
-            }
+                if (Clients.All(p => p != client))
+                    return false;
 
-            return false;
+                var clients = new ConcurrentQueue<T>();
+                T existingClient;
+                while (Clients.TryDequeue(out existingClient))
+                    if (client != existingClient)
+                        clients.Enqueue(existingClient);
+
+                Clients = clients;
+                return true;
+            }
         }
 
         /// <summary>
@@ -244,9 +249,9 @@ namespace OpenShare.Net.Library.Threading
         /// <param name="disposing">If Dispose() is manually invoked.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed && disposing)
+            lock (LockObject)
             {
-                lock (LockObject)
+                if (!_disposed && disposing)
                 {
                     if (Clients != null && Clients.Count > 0)
                     {
@@ -266,18 +271,26 @@ namespace OpenShare.Net.Library.Threading
                         }
                     }
                 }
-            }
 
-            _disposed = true;
+                _disposed = true;
+            }
         }
 
         /// <summary>
         /// Implements Dispose from IDisposable interface.
+        /// <remarks>
+        /// Based on the Dispose Pattern described on MSDN, found at the following link:
+        /// https://msdn.microsoft.com/en-us/library/b1yfkh5e(v=vs.110).aspx
+        /// the article suggests to not make the parameterless Displose method virtual.
+        /// </remarks>
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            lock (LockObject)
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
         }
     }
 }

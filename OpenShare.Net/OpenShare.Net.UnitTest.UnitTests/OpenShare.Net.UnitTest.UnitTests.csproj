@@ -102,6 +102,7 @@
     <Compile Include="Models\MochStringModel.cs" />
     <Compile Include="OpenShareNetLibraryCommonUnitTests.cs" />
     <Compile Include="OpenShareNetLibraryServicesUnitTests.cs" />
+    <Compile Include="OpenShareNetLibraryThreadingUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +113,10 @@
     <ProjectReference Include="..\OpenShare.Net.Library.Services\OpenShare.Net.Library.Services.csproj">
       <Project>{2FD5167A-6931-4461-9ECC-3A14694B6F20}</Project>
       <Name>OpenShare.Net.Library.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenShare.Net.Library.Threading\OpenShare.Net.Library.Threading.csproj">
+      <Project>{3AE9B418-5A24-4A50-A6F7-F87AC2D103D3}</Project>
+      <Name>OpenShare.Net.Library.Threading</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

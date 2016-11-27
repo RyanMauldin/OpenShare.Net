@@ -44,19 +44,19 @@ namespace OpenShare.Net.UnitTest.UnitTests
             Assert.IsNotNull(logService);
         }
 
-        //[TestMethod]
-        //public void HttpService_TestHttpGet()
-        //{
-        //    var apiKey = "555555555555555555555555";
-        //    var vin = "1A1AA1A11A1111111";
-        //    var url = $"https://api.yoursite.com/api/vehicle/vins/{vin}?fmt=json&api_key={apiKey}";
-        //    var httpService = new HttpService();
-        //    var response = httpService.RequestJsonAsync(
-        //        HttpMethod.Get,
-        //        url).Result;
+        [TestMethod]
+        public void HttpService_TestHttpGet()
+        {
+            var apiKey = "555555555555555555555555";
+            var vin = "1A1AA1A11A1111111";
+            var url = $"https://api.yoursite.com/api/vehicle/vins/{vin}?fmt=json&api_key={apiKey}";
+            var httpService = new HttpService();
+            var response = httpService.RequestJsonAsync(
+                HttpMethod.Get,
+                url).Result;
 
-        //    Assert.IsNotNull(response);
-        //    Assert.IsTrue(response.Length > 0);
-        //}
+            Assert.IsNotNull(response);
+            Assert.IsTrue(response.Length > 0);
+        }
     }
 }
