@@ -491,6 +491,7 @@ namespace OpenShare.Net.Library.Threading
         /// <param name="cacheExpirationInMilliseconds">
         /// The duration in milliseconds that cache will expire.
         /// <remarks>
+        /// Default is set at 900,000 milliseconds or 15 minutes.
         /// This value can also be adjusted at runtime by changing the 
         /// <see cref="CacheExpirationInMilliseconds"/> property.
         /// Changing the <see cref="CacheExpirationInMilliseconds"/> property at runtime
@@ -505,6 +506,7 @@ namespace OpenShare.Net.Library.Threading
         /// <param name="useSlidingExpiration">
         /// Should cache mechanism use a sliding timeout for expiration duration.
         /// <remarks>
+        /// Default is set to true.
         /// If <see cref="UseSlidingExpiration"/> is set to true, as values are accessed
         /// in cache, the expiration date is incremented by the amount set in the
         /// <see cref="CacheExpirationInMilliseconds"/> property, as long as the
@@ -517,13 +519,16 @@ namespace OpenShare.Net.Library.Threading
         /// expired cache values. Setting the value equal to or below 0 will stop
         /// polling and leaves removing expired or least used cache values to the
         /// add methods and indexer set method.
+        /// <remarks>
+        /// Default is set at 60,000 milliseconds or 1 minute.
+        /// </remarks>
         /// </param>
         public ConcurrentCache(
             IEqualityComparer<TKey> comparer = null,
             long maxCachedValues = 1024L,
             double cacheExpirationInMilliseconds = 900000D,
             bool useSlidingExpiration = true,
-            double pollingIntervalInMilliseconds = 15000D)
+            double pollingIntervalInMilliseconds = 60000D)
         {
             lock (LockObject)
             {
@@ -587,7 +592,9 @@ namespace OpenShare.Net.Library.Threading
         }
 
         /// <summary>
-        /// Adds a value to cache.
+        /// Adds a value to cache or overwrite an existing value if it exists.
+        /// For overwrites, the expiration is updated if <see cref="UseSlidingExpiration"/>
+        /// property is set to true.
         /// </summary>
         /// <param name="item">The key value pair to add to cache.</param>
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -902,6 +909,8 @@ namespace OpenShare.Net.Library.Threading
 
         /// <summary>
         /// Adds a value with the provided key to cache or updates an existing value for the specified key.
+        /// For overwrites, the expiration is updated if <see cref="UseSlidingExpiration"/>
+        /// property is set to true.
         /// <remarks>
         /// This method can be thought of as put in most cache terminolgy or an upsert in
         /// repository terms, however the intention wit this class was to keep familiarity
@@ -972,6 +981,10 @@ namespace OpenShare.Net.Library.Threading
 
         /// <summary>
         /// Gets the value associated with the specified key from cache.
+        /// <remarks>
+        /// The expiration is updated if <see cref="UseSlidingExpiration"/>
+        /// property is set to true.
+        /// </remarks>
         /// </summary>
         /// <param name="key">The key whose value to get.</param>
         /// <param name="value">
@@ -1032,7 +1045,12 @@ namespace OpenShare.Net.Library.Threading
             }
         }
 
-        /// <summary>Gets or sets the value associated with the specified key.</summary>
+        /// <summary>
+        /// Gets or sets the value associated with the specified key.
+        /// When getting values, adding a new value, or overwrites using the indexer,
+        /// the expiration is updated if <see cref="UseSlidingExpiration"/>
+        /// property is set to true.
+        /// </summary>
         /// <param name="key">The key of the value to get or set.</param>
         /// <exception cref="T:System.ArgumentNullException">
         /// <paramref name="key" /> is null.
@@ -1111,7 +1129,9 @@ namespace OpenShare.Net.Library.Threading
 
         /// <summary>
         /// Iterate through the cache and update the expiration for every value,
-        /// included already expired cache.
+        /// included already expired cache. This will update expiration periods
+        /// for every value regardless of whether or not <see cref="UseSlidingExpiration"/>
+        /// property is set to true.
         /// <remarks>
         /// If polling was stopped by calling the <see cref="StopPolling"/> method
         /// prior to calling <see cref="Revive"/>, this method will not start
