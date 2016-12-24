@@ -297,5 +297,37 @@ namespace OpenShare.Net.UnitTest.UnitTests
             Assert.AreEqual(dateTest1, new DateTime(2014, 12, 31));
             Assert.AreEqual(dateTest2, new DateTime(1, 1, 1));
         }
+
+        [TestMethod]
+        public void DateTimeParser_Tests()
+        {
+            DateTime date;
+            var dateStr = "12/12/2015 3:34:00 AM EST";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "12/12/2015 3:34:00+5:00 AM EST";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "01/05/2017 06:32 PM CT";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "01 / 05/2017 06:32 PM";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "12/12/16";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "01 / 05/2017 06:32 PM";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "01/05/2017 11:18 AM";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "December 13th, 2016";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "Dec. 13th, 2016.";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+        }
     }
 }

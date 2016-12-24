@@ -79,6 +79,7 @@
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="DateTimeExtensions.cs" />
     <Compile Include="DateTimeHelper.cs" />
+    <Compile Include="DateTimeParser.cs" />
     <Compile Include="FileExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="IListExtensions.cs" />
