@@ -22,6 +22,7 @@ namespace OpenShare.Net.Library.Services
         public HttpService()
         {
             Container = new CookieContainer();
+
             _basicAuthenticaiton = new SecureString();
             _basicAuthenticaiton.MakeReadOnly();
         }
@@ -35,6 +36,8 @@ namespace OpenShare.Net.Library.Services
             SecureString username,
             SecureString password)
         {
+            Container = new CookieContainer();
+
             _basicAuthenticaiton = $"{username.ToUnsecureString()}:{password.ToUnsecureString()}"
                 .ToBase64String()
                 .ToSecureString();
