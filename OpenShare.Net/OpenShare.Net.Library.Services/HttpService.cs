@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using OpenShare.Net.Library.Common;
 
 namespace OpenShare.Net.Library.Services
 {
@@ -14,9 +17,32 @@ namespace OpenShare.Net.Library.Services
     {
         public CookieContainer Container { get; set; }
 
+        private readonly SecureString _basicAuthenticaiton;
+
         public HttpService()
         {
             Container = new CookieContainer();
+            _basicAuthenticaiton = new SecureString();
+            _basicAuthenticaiton.MakeReadOnly();
+        }
+
+        /// <summary>
+        /// Constructor for Basic Authentication
+        /// </summary>
+        /// <param name="username">Username as SecureString</param>
+        /// <param name="password">Password as SecureString</param>
+        public HttpService(
+            SecureString username,
+            SecureString password)
+        {
+            _basicAuthenticaiton = $"{username.ToUnsecureString()}:{password.ToUnsecureString()}"
+                .ToBase64String()
+                .ToSecureString();
+
+            if (!username.IsReadOnly())
+                username.Clear();
+            if (!password.IsReadOnly())
+                password.Clear();
         }
 
         public virtual async Task<HttpResponseMessage> LoginAsync(
@@ -45,6 +71,9 @@ namespace OpenShare.Net.Library.Services
                 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     return response.EnsureSuccessStatusCode();
                 }
@@ -74,6 +103,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     return response.EnsureSuccessStatusCode();
                 }
@@ -102,6 +134,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                         return await response.Content.ReadAsStringAsync();
@@ -140,6 +175,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                         return await response.Content.ReadAsStringAsync();
@@ -175,6 +213,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                         return await response.Content.ReadAsByteArrayAsync();
@@ -213,6 +254,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                         return await response.Content.ReadAsByteArrayAsync();
@@ -248,6 +292,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                         return await response.Content.ReadAsStreamAsync();
@@ -286,6 +333,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                         return await response.Content.ReadAsStreamAsync();
@@ -323,6 +373,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                     {
@@ -366,6 +419,9 @@ namespace OpenShare.Net.Library.Services
 
                 using (var httpClient = new HttpClient(httpClientHandler))
                 {
+                    if (_basicAuthenticaiton.Length > 0)
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", _basicAuthenticaiton.ToUnsecureString());
+
                     var response = await httpClient.SendAsync(httpRequestMessage, cancellationToken);
                     if (skipStatusCheck)
                     {
