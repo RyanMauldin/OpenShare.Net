@@ -10,13 +10,18 @@ namespace OpenShare.Net.Library.Services
     {
         Task<HttpResponseMessage> LoginAsync(string url, Dictionary<string, string> content = null, CancellationToken cancellationToken = default(CancellationToken));
         Task<HttpResponseMessage> LoginJsonAsync(string url, Dictionary<string, string> content = null, CancellationToken cancellationToken = default(CancellationToken));
+        Task<HttpResponseMessage> LoginJsonAsync<T>(string url, T content, CancellationToken cancellationToken = default(CancellationToken));
         Task<string> RequestAsync(HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task<string> RequestJsonAsync(HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
+        Task<string> RequestJsonAsync<T>(HttpMethod httpMethod, string url, T content, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task<byte[]> RequestBytesAsync(HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task<byte[]> RequestBytesJsonAsync(HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
+        Task<byte[]> RequestBytesJsonAsync<T>(HttpMethod httpMethod, string url, T content, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task<Stream> RequestStreamAsync(HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task<Stream> RequestStreamJsonAsync(HttpMethod httpMethod, string url, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
+        Task<Stream> RequestStreamJsonAsync<T>(HttpMethod httpMethod, string url, T content, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task RequestStreamAsync(HttpMethod httpMethod, string url, Stream stream, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
         Task RequestStreamJsonAsync(HttpMethod httpMethod, string url, Stream stream, Dictionary<string, string> content = null, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
+        Task RequestStreamJsonAsync<T>(HttpMethod httpMethod, string url, Stream stream, T content, bool skipStatusCheck = false, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
