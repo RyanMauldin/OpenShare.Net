@@ -328,6 +328,9 @@ namespace OpenShare.Net.UnitTest.UnitTests
 
             dateStr = "Dec. 13th, 2016.";
             Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
+            dateStr = "2015-12-12T03:34:00.100Z";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
         }
     }
 }
