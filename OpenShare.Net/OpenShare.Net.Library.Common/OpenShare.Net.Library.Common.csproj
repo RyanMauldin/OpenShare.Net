@@ -86,6 +86,7 @@
     <Compile Include="Impersonation.cs" />
     <Compile Include="Sha1Encryption.cs" />
     <Compile Include="StreamExtensions.cs" />
+    <Compile Include="TimeSpanExtensions.cs" />
     <Compile Include="Types\LogonProviderType.cs" />
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="SecureStringExtensions.cs" />

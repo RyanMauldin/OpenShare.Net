@@ -305,6 +305,9 @@ namespace OpenShare.Net.UnitTest.UnitTests
             var dateStr = "12/12/2015 3:34:00 AM EST";
             Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
 
+            dateStr = "Saturday Aug 6 2016";
+            Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+
             dateStr = "12/12/2015 3:34:00+5:00 AM EST";
             Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
 
@@ -331,6 +334,36 @@ namespace OpenShare.Net.UnitTest.UnitTests
 
             dateStr = "2015-12-12T03:34:00.100Z";
             Assert.IsTrue(DateTimeParser.TryParseUtc(dateStr, out date));
+        }
+
+        [TestMethod]
+        public void TimeSpanExtensions_Tests()
+        {
+            var timeSpan1 = new TimeSpan(-377, 23, 59, 59, 9994);
+            var timeSpan2 = new TimeSpan(377, 23, 59, 59, 9994);
+            var timeSpan3 = new TimeSpan(-0, 23, 59, 59, 9997);
+            var timeSpan4 = new TimeSpan(0, 23, 59, 59, 9997);
+            var timeSpan5 = new TimeSpan(-1, 23, 59, 59, 9997);
+            var timeSpan6 = new TimeSpan(1, 23, 59, 59, 9997);
+            var timeSpan7 = new TimeSpan(-677, 23, 59, 59, 0);
+            var timeSpan8 = new TimeSpan(677, 23, 59, 59, 0);
+
+            Assert.AreEqual(timeSpan1.ToFriendlyString(), "-375 days, 23:59:51.006");
+            Assert.AreEqual(timeSpan1.ToString(), "-375.23:59:51.0060000");
+            Assert.AreEqual(timeSpan2.ToFriendlyString(), "378 days, 00:00:08.994");
+            Assert.AreEqual(timeSpan2.ToString(), "378.00:00:08.9940000");
+            Assert.AreEqual(timeSpan3.ToFriendlyString(), "1 day, 00:00:08.997");
+            Assert.AreEqual(timeSpan3.ToString(), "1.00:00:08.9970000");
+            Assert.AreEqual(timeSpan4.ToFriendlyString(), "1 day, 00:00:08.997");
+            Assert.AreEqual(timeSpan4.ToString(), "1.00:00:08.9970000");
+            Assert.AreEqual(timeSpan5.ToFriendlyString(), "00:00:08.997");
+            Assert.AreEqual(timeSpan5.ToString(), "00:00:08.9970000");
+            Assert.AreEqual(timeSpan6.ToFriendlyString(), "2 days, 00:00:08.997");
+            Assert.AreEqual(timeSpan6.ToString(), "2.00:00:08.9970000");
+            Assert.AreEqual(timeSpan7.ToFriendlyString(), "-676 days, 00:00:01.000");
+            Assert.AreEqual(timeSpan7.ToString(), "-676.00:00:01");
+            Assert.AreEqual(timeSpan8.ToFriendlyString(), "677 days, 23:59:59.000");
+            Assert.AreEqual(timeSpan8.ToString(), "677.23:59:59");
         }
     }
 }
