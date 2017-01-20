@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenShare.Net.Library.Common;
@@ -296,6 +297,71 @@ namespace OpenShare.Net.UnitTest.UnitTests
             var dateTest2 = ConfigurationHelper.GetDateFromAppSettings("DateTest2");
             Assert.AreEqual(dateTest1, new DateTime(2014, 12, 31));
             Assert.AreEqual(dateTest2, new DateTime(1, 1, 1));
+        }
+
+        [TestMethod]
+        public void DateTimeHelper_Tests()
+        {
+            const int month = 8;
+            const int day = 1;
+            const int year = 2017;
+
+            var date = DateTimeHelper.GetDateTimeFromShortDateString($"{month}/{day}/{year}");
+            Assert.AreEqual(date.Month, month);
+            Assert.AreEqual(date.Day, day);
+            Assert.AreEqual(date.Year, year);
+
+            date = DateTimeHelper.GetDateTimeFromShortDateString($"{month:d2}/{day:d2}/{year:d4}");
+            Assert.AreEqual(date.Month, month);
+            Assert.AreEqual(date.Day, day);
+            Assert.AreEqual(date.Year, year);
+            
+            const string estTimeZoneId = "Eastern Standard Time";
+            const string pstTimeZoneId = "Pacific Standard Time";
+            var utcTimeZoneId = TimeZoneInfo.Utc.Id;
+            var period = TimeSpan.FromDays(1);
+            var utcNow = new DateTime(2017, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+            // Full methods
+            var runStartMidnightEst = new TimeSpan(0, 0, 0, 0, 0);
+            var dueDateMidnightEst = DateTimeHelper.GetTimeTillNextReminder(utcNow, runStartMidnightEst, period, estTimeZoneId);
+            Assert.IsTrue(dueDateMidnightEst.TotalHours - 5d < 0.0001d);
+
+            var runStartOneAmEst = new TimeSpan(0, 1, 0, 0, 0);
+            var dueDateOneAmEst = DateTimeHelper.GetTimeTillNextReminder(utcNow, runStartOneAmEst, period, estTimeZoneId);
+            Assert.IsTrue(dueDateOneAmEst.TotalHours - 6d < 0.0001d);
+
+            var runStartMidnightPst = new TimeSpan(0, 0, 0, 0, 0);
+            var dueDateMidnightPst = DateTimeHelper.GetTimeTillNextReminder(utcNow, runStartMidnightPst, period, pstTimeZoneId);
+            Assert.IsTrue(dueDateMidnightPst.Subtract(dueDateMidnightEst).TotalHours - 3d < 0.0001d);
+
+            var runStartMidnightUtc = new TimeSpan(0, 0, 0, 0, 0);
+            var dueDateMidnightUtc = DateTimeHelper.GetTimeTillNextReminder(utcNow, runStartMidnightUtc, period, utcTimeZoneId);
+            Assert.IsTrue(dueDateMidnightUtc.TotalHours < 0.0001d);
+
+            var beforePossiblePreviousRunDateUtcNow = utcNow.AddDays(period.TotalDays * -2);
+            dueDateMidnightEst = DateTimeHelper.GetTimeTillNextReminder(beforePossiblePreviousRunDateUtcNow, runStartMidnightEst, period, estTimeZoneId);
+            Assert.IsTrue(dueDateMidnightEst.TotalHours - 5d < 0.0001d);
+
+            var runStartSixAmEst = new TimeSpan(0, 6, 0, 0, 0);
+            var dueDateSixAmEst = DateTimeHelper.GetTimeTillNextReminder(beforePossiblePreviousRunDateUtcNow, runStartSixAmEst, period, estTimeZoneId);
+            Assert.IsTrue(dueDateSixAmEst.TotalHours - 11d < 0.0001d);
+
+            var utcNowSevenAmEst = new DateTime(2017, 1, 1, 12, 0, 0, DateTimeKind.Utc);
+            dueDateSixAmEst = DateTimeHelper.GetTimeTillNextReminder(utcNowSevenAmEst, runStartSixAmEst, period, estTimeZoneId);
+            Assert.IsTrue(dueDateSixAmEst.TotalHours - 23d < 0.0001d);
+
+            var runStartEightAmEst = new TimeSpan(0, 8, 0, 0, 0);
+            var dueDateEightAmEst = DateTimeHelper.GetTimeTillNextReminder(utcNowSevenAmEst, runStartEightAmEst, period, estTimeZoneId);
+            Assert.IsTrue(dueDateEightAmEst.TotalHours - 1d < 0.0001d);
+
+            // Short methods (Note: These are commented out as they are breakpoint/time sensitive tests on the Assertions)
+            //dueDateMidnightEst = DateTimeHelper.GetTimeTillNextReminder(runStartMidnightEst, period, estTimeZoneId);
+            //dueDateMidnightPst = DateTimeHelper.GetTimeTillNextReminder(runStartMidnightPst, period, pstTimeZoneId);
+            //Assert.IsTrue(dueDateMidnightPst.Subtract(dueDateMidnightEst).TotalHours - 3d < 0.0001d);
+
+            //var preferredUtcRunDate = DateTimeHelper.GetPreferredUtcRunDate(runStartMidnightUtc);
+            //Assert.IsTrue(preferredUtcRunDate.Subtract(DateTime.UtcNow).TotalHours < 0.0001d);
         }
 
         [TestMethod]
