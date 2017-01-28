@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace OpenShare.Net.Library.Common
@@ -25,6 +26,136 @@ namespace OpenShare.Net.Library.Common
                 Convert.ToInt32(dateMatch.Groups[2].Value));
         }
 
+        /// <summary>
+        /// Tries to convert the <paramref name="value"/> parameter into a four digit year.
+        /// If this method fails to produce a viable value, it will return null.
+        /// If year is less than zero or greater than the DateTime.MaxValue.Year property, it will also return null.
+        /// <remarks>
+        /// Currently the CultureInfo.CurrentCulture.Calendar.TwoDigitYearMax is 2029.
+        /// This method is subject to change behavior based on operating system regional and language settings, and the
+        /// .NET Framework implementation of CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year);
+        /// e.g. GetFourDigitYear(0) : 2000,
+        /// GetFourDigitYear(29) : 2029,
+        /// GetFourDigitYear(30) : 1930,
+        /// GetFourDigitYear(99) : 1999,
+        /// GetFourDigitYear(999) : 999
+        /// </remarks>
+        /// </summary>
+        /// <param name="value">The value to try and convert to a four digit year.</param>
+        /// <returns>An integer value that is a four digit year value or null.</returns>
+        public static int? GetFourDigitYear(int? value)
+        {
+            if (value == null)
+                return null;
+
+            var year = Convert.ToInt32(value);
+            if (year < 0
+                || year > DateTime.MaxValue.Year)
+                return null;
+
+            return year >= 100
+                ? year
+                : CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year);
+        }
+
+        /// <summary>
+        /// Tries to convert the <paramref name="value"/> parameter into a four digit year.
+        /// If this method fails to produce a viable value, it will return null.
+        /// If year is less than zero or greater than the DateTime.MaxValue.Year property, it will also return null.
+        /// <remarks>
+        /// Currently the CultureInfo.CurrentCulture.Calendar.TwoDigitYearMax is 2029.
+        /// This method is subject to change behavior based on operating system regional and language settings, and the
+        /// .NET Framework implementation of CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year);
+        /// e.g. GetFourDigitYear("0") : 2000,
+        /// GetFourDigitYear("29") : 2029,
+        /// GetFourDigitYear("30") : 1930,
+        /// GetFourDigitYear("99") : 1999,
+        /// GetFourDigitYear("999") : 999
+        /// </remarks>
+        /// </summary>
+        /// <param name="value">The value to try and convert to a four digit year.</param>
+        /// <returns>An integer value that is a four digit year value or null.</returns>
+        public static int? GetFourDigitYear(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            int year;
+            if (!int.TryParse(value.Trim(), out year)
+                || year < 0
+                || year > DateTime.MaxValue.Year)
+                return null;
+            
+            return year >= 100
+                ? year
+                : CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year);
+        }
+
+        /// <summary>
+        /// Tries to convert the <paramref name="value"/> parameter into a four digit year.
+        /// If this method fails to produce a viable value, it will return null.
+        /// If year is less than zero or greater than the DateTime.MaxValue.Year property, it will also return null.
+        /// <remarks>
+        /// Currently the CultureInfo.CurrentCulture.Calendar.TwoDigitYearMax is 2029.
+        /// This method is subject to change behavior based on operating system regional and language settings, and the
+        /// .NET Framework implementation of CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year);
+        /// e.g. GetFourDigitYear(0) : "2000",
+        /// GetFourDigitYear(29) : "2029",
+        /// GetFourDigitYear(30) : "1930",
+        /// GetFourDigitYear(99) : "1999",
+        /// GetFourDigitYear(999) : "999"
+        /// </remarks>
+        /// </summary>
+        /// <param name="value">The value to try and convert to a four digit year.</param>
+        /// <returns>A string value that is a four digit year or null.</returns>
+        public static string GetFourDigitYearAsString(int? value)
+        {
+            if (value == null)
+                return null;
+
+            var year = Convert.ToInt32(value);
+            if (year < 0
+                || year > DateTime.MaxValue.Year)
+                return null;
+
+            return year >= 100
+                ? $"{year:d4}"
+                : $"{CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year):d4}";
+        }
+
+        /// <summary>
+        /// Tries to convert the <paramref name="value"/> parameter into a four digit year.
+        /// If this method fails to produce a viable value, it will return null.
+        /// If year is less than zero or greater than the DateTime.MaxValue.Year property, it will also return null.
+        /// <remarks>
+        /// Currently the CultureInfo.CurrentCulture.Calendar.TwoDigitYearMax is 2029.
+        /// This method is subject to change behavior based on operating system regional and language settings, and the
+        /// .NET Framework implementation of CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year);
+        /// e.g. GetFourDigitYear("0") : "2000",
+        /// GetFourDigitYear("29") : "2029",
+        /// GetFourDigitYear("30") : "1930",
+        /// GetFourDigitYear("99") : "1999",
+        /// GetFourDigitYear("999") : "999"
+        /// </remarks>
+        /// </summary>
+        /// <param name="value">The value to try and convert to a four digit year.</param>
+        /// <returns>A string value that is a four digit year or null.</returns>
+        public static string GetFourDigitYearAsString(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            int year;
+            if (!int.TryParse(value.Trim(), out year)
+                || year < 0
+                || year > DateTime.MaxValue.Year)
+                return null;
+
+            return year >= 100
+                ? $"{year:d4}"
+                : $"{CultureInfo.CurrentCulture.Calendar.ToFourDigitYear(year):d4}";
+        }
+        
         /// <summary>
         /// Gets the time an application would have run, or should run today in UTC, relative to the UTC time zone.
         /// The <paramref name="runStart"/> parameter should be an Hour, Minute, Second, based specification of when to run, represented

@@ -315,7 +315,53 @@ namespace OpenShare.Net.UnitTest.UnitTests
             Assert.AreEqual(date.Month, month);
             Assert.AreEqual(date.Day, day);
             Assert.AreEqual(date.Year, year);
-            
+
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear((int?)null), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(-1), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(DateTime.MaxValue.Year + 1), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(0), 2000);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(10), 2010);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(29), 2029);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(30), 1930);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(99), 1999);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(999), 999);
+
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear((string)null), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(string.Empty), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(" "), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("-1"), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear(Convert.ToString(DateTime.MaxValue.Year + 1)), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("2f23t"), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("0"), 2000);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("10"), 2010);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("29"), 2029);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("30"), 1930);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("99"), 1999);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYear("999"), 999);
+
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString((int?)null), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(-1), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(DateTime.MaxValue.Year + 1), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(0), "2000");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(10), "2010");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(29), "2029");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(30), "1930");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(99), "1999");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(999), "0999");
+
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString((string)null), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(string.Empty), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(" "), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("-1"), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString(Convert.ToString(DateTime.MaxValue.Year + 1)), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("2f23t"), null);
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("0"), "2000");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("10"), "2010");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("29"), "2029");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("30"), "1930");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("99"), "1999");
+            Assert.AreEqual(DateTimeHelper.GetFourDigitYearAsString("999"), "0999");
+
             const string estTimeZoneId = "Eastern Standard Time";
             const string pstTimeZoneId = "Pacific Standard Time";
             var utcTimeZoneId = TimeZoneInfo.Utc.Id;
