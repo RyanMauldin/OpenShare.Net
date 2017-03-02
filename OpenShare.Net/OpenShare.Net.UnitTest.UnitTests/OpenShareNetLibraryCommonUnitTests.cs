@@ -297,6 +297,23 @@ namespace OpenShare.Net.UnitTest.UnitTests
             var dateTest2 = ConfigurationHelper.GetDateFromAppSettings("DateTest2");
             Assert.AreEqual(dateTest1, new DateTime(2014, 12, 31));
             Assert.AreEqual(dateTest2, new DateTime(1, 1, 1));
+            Assert.AreEqual(DateTime.MaxValue.Date.StartOfDay(), new DateTime(9999, 12, 31));
+            Assert.AreEqual(DateTime.MaxValue.Date.EndOfDay(0), DateTime.MaxValue);
+
+            const string estTimeZoneId = "Eastern Standard Time";
+            var utcNow = new DateTime(2017, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var estNow = new DateTime(2016, 12, 31, 19, 0, 0, DateTimeKind.Unspecified);
+
+            Assert.AreEqual(estNow.StartOfDay(), utcNow.StartOfDayFromUtc(estTimeZoneId));
+            Assert.AreEqual(estNow.StartOfDay().ToUniversalTime(), utcNow.StartOfDayFromUtc(estTimeZoneId).ToUniversalTime());
+
+            Assert.AreEqual(estNow.EndOfDay(0), utcNow.EndOfDayFromUtc(estTimeZoneId, 0));
+            Assert.AreEqual(estNow.EndOfDay(1), utcNow.EndOfDayFromUtc(estTimeZoneId, 1));
+            Assert.AreEqual(estNow.EndOfDay(9), utcNow.EndOfDayFromUtc(estTimeZoneId, 9));
+
+            Assert.AreEqual(estNow.EndOfDay(0).ToUniversalTime(), utcNow.EndOfDayFromUtc(estTimeZoneId, 0).ToUniversalTime());
+            Assert.AreEqual(estNow.EndOfDay(1).ToUniversalTime(), utcNow.EndOfDayFromUtc(estTimeZoneId, 1).ToUniversalTime());
+            Assert.AreEqual(estNow.EndOfDay(9).ToUniversalTime(), utcNow.EndOfDayFromUtc(estTimeZoneId, 9).ToUniversalTime());
         }
 
         [TestMethod]
